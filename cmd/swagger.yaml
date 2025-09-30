@@ -1,0 +1,9 @@
+# cmd/app/swagger.yaml
+dir: ./cmd,./internal
+output: ../../docs
+parseDependency: true
+parseInternal: true
+parseVendor: false
+generatedTime: true
+propertyStrategy: camelcase
+outputTypes: go,json,yaml

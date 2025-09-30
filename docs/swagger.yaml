@@ -1,0 +1,117 @@
+basePath: /
+definitions:
+  request.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  request.RegisterRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  response.LoginResponse:
+    properties:
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  response.RegisterResponse:
+    properties:
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Task Manager REST API
+  title: Task Manager API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Проверяет входные данные и возвращает access-token
+      parameters:
+      - description: Данные входа
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.LoginResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "401":
+          description: User with this nickname not found
+          schema:
+            type: string
+        "405":
+          description: Unsupported method
+          schema:
+            type: string
+        "409":
+          description: User already exists
+          schema:
+            type: string
+      summary: Вход пользователя
+      tags:
+      - auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Создаёт пользователя и возвращает JWT
+      parameters:
+      - description: Данные регистрации
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.RegisterResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "405":
+          description: Unsupported method
+          schema:
+            type: string
+        "409":
+          description: User already exists
+          schema:
+            type: string
+      summary: Регистрация пользователя
+      tags:
+      - auth
+schemes:
+- http
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
